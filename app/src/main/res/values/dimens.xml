@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="rows_paddingTopBot">20dp</dimen>
+
+    <!-- List Search Track-->
+    <dimen name="trackNameLeftRight">15dp</dimen>
+    <dimen name="trackNameTop">35dp</dimen>
+    <dimen name="trackNameBot">10dp</dimen>
+
+    <!-- Main Activity-->
+    <dimen name="search_text_margin">15dp</dimen>
+</resources>

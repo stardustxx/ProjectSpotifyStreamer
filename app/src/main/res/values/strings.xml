@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ProjectSpotifyStreamer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Search Main Activity-->
+    <string name="artist_search_pic_desc">Artist Picture</string>
+    <string name="artist_search_name">Artist Name</string>
+    <string name="search_edittext_hint">Search artist here</string>
+    <string name="title_activity_top10tracks">Top10tracks</string>
+    <string name="search_button_content_description">Search Button</string>
+
+    <!-- Top 10 Tracks Activity-->
+    <string name="track_name">Track Name</string>
+    <string name="album_nuame">Album name</string>
+
+</resources>

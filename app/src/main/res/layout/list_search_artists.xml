@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingTop="@dimen/rows_paddingTopBot"
+    android:paddingBottom="@dimen/rows_paddingTopBot"
+    >
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/artistPic"
+        android:contentDescription="@string/artist_search_pic_desc"
+        android:adjustViewBounds="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/udacity"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/artistName"
+        android:layout_toEndOf="@+id/artistPic"
+        android:layout_toRightOf="@+id/artistPic"
+        android:paddingTop="@dimen/trackNameTop"
+        android:paddingBottom="@dimen/trackNameTop"
+        android:paddingLeft="@dimen/trackNameLeftRight"
+        android:paddingRight="@dimen/trackNameLeftRight"
+        android:gravity="center_vertical"
+        android:text="@string/artist_search_name"
+        android:textSize="15sp"
+        />
+
+</RelativeLayout>
