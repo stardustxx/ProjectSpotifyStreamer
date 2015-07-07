@@ -31,8 +31,6 @@ public class TracksAdapter extends ArrayAdapter<Track> {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_tracks, parent, false);
             tracksViewHolder = new TracksViewHolder(convertView);
             convertView.setTag(tracksViewHolder);
-
-            return convertView;
         }
         else {
             tracksViewHolder = (TracksViewHolder) convertView.getTag();

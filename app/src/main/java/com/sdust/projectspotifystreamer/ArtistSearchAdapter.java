@@ -44,17 +44,6 @@ public class ArtistSearchAdapter extends ArrayAdapter<Celebrity> {
         Picasso.with(context).load(celebrity.imageURL).into(myViewHolder.image);
         myViewHolder.name.setText(celebrity.name);
 
-//        View rootView = layoutInflater.inflate(R.layout.list_search_artists, parent, false);
-//
-//        ImageView image;
-//        TextView name;
-//
-//        image = (ImageView) rootView.findViewById(R.id.artistPic);
-//        Picasso.with(context).load(celebrity.imageURL).into(image);
-//
-//        name = (TextView) rootView.findViewById(R.id.artistName);
-//        name.setText(celebrity.name);
-
         return convertView;
     }
 }

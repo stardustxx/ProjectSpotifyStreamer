@@ -25,9 +25,6 @@ public class Top10tracksFragment extends Fragment {
 
     TracksAdapter tracksAdapter;
 
-    public Top10tracksFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
