@@ -37,14 +37,21 @@ public class Top10tracksFragment extends Fragment {
         tracksAdapter = new TracksAdapter(getActivity(), tracksData);
         tracksList.setAdapter(tracksAdapter);
 
-        // Store the artist id that is passed through intern from parent activity
-        Bundle extras = getActivity().getIntent().getExtras();
-        if (extras != null){
-            artistid = extras.getString(ARTIST_ID);
-            tracksFinder.execute(artistid);
-            Log.d("tracksfinder", "grabbing stuffs");
-        }
+//        // Store the artist id that is passed through intern from parent activity
+//        if (savedInstanceState == null){
+//            Bundle extras = getActivity().getIntent().getExtras();
+//            if (extras != null){
+//                artistid = extras.getString(ARTIST_ID);
+//                tracksFinder.execute(artistid);
+//            }
+//        }
 
+        // We grab data that is passed when fragment is implemented
+        Bundle args = getArguments();
+        if (args != null){
+            artistid = args.getString(Top10tracksFragment.ARTIST_ID);
+            tracksFinder.execute(artistid);
+        }
         return rootView;
     }
 
@@ -52,7 +59,6 @@ public class Top10tracksFragment extends Fragment {
         tracksAdapter.clear();
         tracksAdapter.addAll(tracks);
         tracksAdapter.notifyDataSetChanged();
-        Log.d("updateView", "done update");
     }
 
     public class TracksFinder extends AsyncTask<String, Void, List<Track>>{
@@ -72,7 +78,7 @@ public class Top10tracksFragment extends Fragment {
                 // It is my bad that I named my own object to be the same as the Spotify function name
                 // Somehow when I refactor/rename my class name, Andoid Studio complains
                 for (kaaes.spotify.webapi.android.models.Track track : tracks.tracks){
-                    Track track1 = new Track(track.album.images.get(1).url, track.name, track.album.name);
+                    Track track1 = new Track(track.album.images.get(2).url, track.name, track.album.name);
                     trackList.add(track1);
                 }
 

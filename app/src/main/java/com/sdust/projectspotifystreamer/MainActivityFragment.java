@@ -30,6 +30,12 @@ public class MainActivityFragment extends Fragment {
     ArtistSearchAdapter artistSearchAdapter;
     ListView listView;
 
+    // An interface created for the mean of communication between two fragments since
+    // they are separate in terms of class
+    public interface CallBack {
+        void onItemSelected(String artistID);
+    }
+
     public MainActivityFragment() {
     }
 
@@ -74,9 +80,15 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (checkNetworkConnection()){
-                    Intent intent = new Intent(getActivity(), Top10tracks.class);
-                    intent.putExtra(Top10tracksFragment.ARTIST_ID, artistSearchAdapter.getItem(position).artistID);
-                    startActivity(intent);
+                    String artistID = artistSearchAdapter.getItem(position).artistID;
+//                    Intent intent = new Intent(getActivity(), Top10tracks.class);
+//                    intent.putExtra(Top10tracksFragment.ARTIST_ID, artistID);
+//                    startActivity(intent);
+
+                    // Since MainActivity has implemented this interface
+                    // We pass it to MainActivity, which is also the container that has two fragments,
+                    // to decide what action to take upon artist item click
+                    ((CallBack) getActivity()).onItemSelected(artistID);
                 }
                 else {
                     Toast.makeText(getActivity(), "No network connection", Toast.LENGTH_SHORT).show();
@@ -125,7 +137,7 @@ public class MainActivityFragment extends Fragment {
 
             for (Artist artist : artistResult){
                 if (!artist.images.isEmpty()){
-                    imageURL = artist.images.get(1).url;
+                    imageURL = artist.images.get(2).url;
                 }
                 else {
                     imageURL = spotifyURL;
@@ -143,5 +155,4 @@ public class MainActivityFragment extends Fragment {
             updateDataAdapter(celebrities);
         }
     }
-
 }

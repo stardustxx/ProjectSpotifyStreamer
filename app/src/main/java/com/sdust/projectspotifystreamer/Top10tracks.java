@@ -12,6 +12,20 @@ public class Top10tracks extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top10tracks);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // If nothing is saved, we grab the data that was sent along the intent
+        // We take the data and add it to tracksFragment that we want to commit
+        if (savedInstanceState == null){
+            Bundle extra = this.getIntent().getExtras();
+            if (extra != null){
+                Top10tracksFragment tracksFragment = new Top10tracksFragment();
+                Bundle args = new Bundle();
+                String artistID = extra.getString(Top10tracksFragment.ARTIST_ID);
+                args.putString(Top10tracksFragment.ARTIST_ID, artistID);
+                tracksFragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction().add(R.id.tracksFragment, tracksFragment).commit();
+            }
+        }
     }
 
 
