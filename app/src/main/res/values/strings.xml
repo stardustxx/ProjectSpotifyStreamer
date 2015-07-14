@@ -12,5 +12,14 @@
     <!-- Top 10 Tracks Activity-->
     <string name="track_name">Track Name</string>
     <string name="album_nuame">Album name</string>
+    <string name="title_activity_play_music">PlayMusicActivity</string>
+
+    <!-- Play Music Activity & Fragment-->
+    <string name="artist_name">Artist Name</string>
+    <string name="album_name">Album Namse</string>
+    <string name="music_album_image">Image placehodler</string>
+    <string name="music_previous">Music Previous</string>
+    <string name="music_play">Music Play</string>
+    <string name="music_next">Music Next</string>
 
 </resources>
