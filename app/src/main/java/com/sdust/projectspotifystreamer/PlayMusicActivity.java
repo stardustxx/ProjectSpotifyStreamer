@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class PlayMusicActivity extends AppCompatActivity {
 
     public static final String MUSICFRAGMENT_TAG = "MFTAG";
@@ -15,14 +17,17 @@ public class PlayMusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_music);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         PlayMusicActivityFragment musicFragment = new PlayMusicActivityFragment();
-        String[] trackInfo = new String[5];
+        ArrayList<Track> tracksData;
+        int trackPosition;
 
         if (savedInstanceState == null){
             Bundle extra = this.getIntent().getExtras();
             if (extra != null){
-                trackInfo = extra.getStringArray(PlayMusicActivityFragment.MUSIC_URL_TAG);
+                tracksData = extra.getParcelableArrayList(PlayMusicActivityFragment.MUSIC_INFO);
+                trackPosition = extra.getInt(PlayMusicActivityFragment.MUSIC_TRACK_NUMBER);
                 Bundle args = new Bundle();
-                args.putStringArray(PlayMusicActivityFragment.MUSIC_URL_TAG, trackInfo);
+                args.putParcelableArrayList(PlayMusicActivityFragment.MUSIC_INFO, tracksData);
+                args.putInt(PlayMusicActivityFragment.MUSIC_TRACK_NUMBER, trackPosition);
                 musicFragment.setArguments(args);
             }
         }

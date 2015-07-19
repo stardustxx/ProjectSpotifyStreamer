@@ -26,6 +26,7 @@ public class Top10tracksFragment extends Fragment {
     public static final String ARTIST_ID = "Artist ID";
 
     TracksAdapter tracksAdapter;
+    ArrayList<Track> tracksData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +35,7 @@ public class Top10tracksFragment extends Fragment {
         String artistid;
         TracksFinder tracksFinder = new TracksFinder();
         ListView tracksList = (ListView) rootView.findViewById(R.id.top10List);
-        List<Track> tracksData = new ArrayList<>();
+        tracksData = new ArrayList<>();
 
         tracksAdapter = new TracksAdapter(getActivity(), tracksData);
         tracksList.setAdapter(tracksAdapter);
@@ -59,11 +60,10 @@ public class Top10tracksFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // I'm not sure how to pass an object in intent so I made an array
-                Track track = tracksAdapter.getItem(position);
-                String[] trackInfo = {track.artistName, track.albumName, track.bigImageURL, track.trackName, track.musicURL};
 
                 Intent intent = new Intent(getActivity(), PlayMusicActivity.class);
-                intent.putExtra(PlayMusicActivityFragment.MUSIC_URL_TAG, trackInfo);
+                intent.putExtra(PlayMusicActivityFragment.MUSIC_TRACK_NUMBER, position);
+                intent.putParcelableArrayListExtra(PlayMusicActivityFragment.MUSIC_INFO, tracksData);
                 startActivity(intent);
             }
         });
@@ -71,16 +71,17 @@ public class Top10tracksFragment extends Fragment {
         return rootView;
     }
 
-    private void updateView(List<Track> tracks){
+    private void updateView(ArrayList<Track> tracks){
+        tracksData = tracks;
         tracksAdapter.clear();
         tracksAdapter.addAll(tracks);
         tracksAdapter.notifyDataSetChanged();
     }
 
-    public class TracksFinder extends AsyncTask<String, Void, List<Track>>{
+    public class TracksFinder extends AsyncTask<String, Void, ArrayList<Track>>{
 
         @Override
-        protected List<Track> doInBackground(String... params) {
+        protected ArrayList<Track> doInBackground(String... params) {
             SpotifyApi spotifyApi = new SpotifyApi();
             SpotifyService spotifyService = spotifyApi.getService();
             Map<String, Object> options = new HashMap<>();
@@ -89,7 +90,7 @@ public class Top10tracksFragment extends Fragment {
             try {
                 Tracks tracks = spotifyService.getArtistTopTrack(params[0], options);
 
-                List<Track> trackList = new ArrayList<>();
+                ArrayList<Track> trackList = new ArrayList<>();
 
                 // It is my bad that I named my own object to be the same as the Spotify function name
                 // Somehow when I refactor/rename my class name, Andoid Studio complains
@@ -107,7 +108,7 @@ public class Top10tracksFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<Track> tracks) {
+        protected void onPostExecute(ArrayList<Track> tracks) {
             super.onPostExecute(tracks);
             updateView(tracks);
         }
