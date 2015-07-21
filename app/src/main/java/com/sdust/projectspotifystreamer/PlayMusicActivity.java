@@ -1,7 +1,7 @@
 package com.sdust.projectspotifystreamer;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -32,7 +32,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             }
         }
 
-        getSupportFragmentManager().beginTransaction().add(R.id.musicFragment, musicFragment, MUSICFRAGMENT_TAG).commit();
+        getFragmentManager().beginTransaction().add(R.id.musicFragment, musicFragment, MUSICFRAGMENT_TAG).commit();
     }
 
 

@@ -11,4 +11,8 @@
 
     <!-- Main Activity-->
     <dimen name="search_text_margin">15dp</dimen>
+
+    <!-- Music Play Fragment-->
+    <dimen name="play_bar_padding_top_bot">20dp</dimen>
+    <dimen name="play_bar_padding_start_end">15dp</dimen>
 </resources>
