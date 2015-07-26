@@ -3,7 +3,6 @@ package com.sdust.projectspotifystreamer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,7 +11,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     private static final String ARTISTFRAG_TAG = "AFTAG";
     private static final String TRACKFRAG_TAG = "TFTAG";
 
-    private Boolean twoPane;
+    public Boolean twoPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +21,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         // Check if the app is running in one panel or two panel mode
         // Meaning it's checking it's a phone or tablet
         if (findViewById(R.id.tracksFragment) != null){
-            twoPane = true;
+            twoPanel = true;
             if (savedInstanceState == null){
                 getSupportFragmentManager().beginTransaction().replace(R.id.tracksFragment, new Top10tracksFragment(), TRACKFRAG_TAG).commit();
             }
         }
         else {
-            twoPane = false;
+            twoPanel = false;
         }
     }
 
@@ -60,11 +59,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         // We decide how to present the layoyt
         // If it's running on tablet, we create the fragment and implement it
         // since in tablet, Activity Main XML does have tracksFragment layout
-        if (twoPane){
+        if (twoPanel){
             Top10tracksFragment tracksFragment = new Top10tracksFragment();
 
             Bundle args = new Bundle();
             args.putString(Top10tracksFragment.ARTIST_ID, artistID);
+            args.putBoolean(Top10tracksFragment.TWO_PANEL, twoPanel);
             tracksFragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.tracksFragment, tracksFragment, TRACKFRAG_TAG).commit();
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         else {
             Intent intent = new Intent(MainActivity.this, Top10tracks.class);
             intent.putExtra(Top10tracksFragment.ARTIST_ID, artistID);
+            intent.putExtra(Top10tracksFragment.TWO_PANEL, twoPanel);
             startActivity(intent);
         }
     }

@@ -32,7 +32,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             }
         }
 
-        getFragmentManager().beginTransaction().add(R.id.musicFragment, musicFragment, MUSICFRAGMENT_TAG).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.musicFragment, musicFragment, MUSICFRAGMENT_TAG).commit();
     }
 
 

@@ -21,7 +21,9 @@ public class Top10tracks extends AppCompatActivity {
                 Top10tracksFragment tracksFragment = new Top10tracksFragment();
                 Bundle args = new Bundle();
                 String artistID = extra.getString(Top10tracksFragment.ARTIST_ID);
+                Boolean twoPanel = extra.getBoolean(Top10tracksFragment.TWO_PANEL);
                 args.putString(Top10tracksFragment.ARTIST_ID, artistID);
+                args.putBoolean(Top10tracksFragment.TWO_PANEL, twoPanel);
                 tracksFragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().add(R.id.tracksFragment, tracksFragment).commit();
             }

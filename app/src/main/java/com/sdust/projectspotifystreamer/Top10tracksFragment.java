@@ -2,8 +2,9 @@ package com.sdust.projectspotifystreamer;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -24,9 +24,12 @@ import retrofit.RetrofitError;
 
 public class Top10tracksFragment extends Fragment {
     public static final String ARTIST_ID = "Artist ID";
+    public static final String TWO_PANEL = "Two Panel";
 
     TracksAdapter tracksAdapter;
     ArrayList<Track> tracksData;
+
+    Boolean twoPanel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,31 +43,33 @@ public class Top10tracksFragment extends Fragment {
         tracksAdapter = new TracksAdapter(getActivity(), tracksData);
         tracksList.setAdapter(tracksAdapter);
 
-//        // Store the artist id that is passed through intern from parent activity
-//        if (savedInstanceState == null){
-//            Bundle extras = getActivity().getIntent().getExtras();
-//            if (extras != null){
-//                artistid = extras.getString(ARTIST_ID);
-//                tracksFinder.execute(artistid);
-//            }
-//        }
-
         // We grab data that is passed when fragment is implemented
         Bundle args = getArguments();
         if (args != null){
             artistid = args.getString(Top10tracksFragment.ARTIST_ID);
+            twoPanel = args.getBoolean(Top10tracksFragment.TWO_PANEL);
             tracksFinder.execute(artistid);
         }
 
         tracksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // I'm not sure how to pass an object in intent so I made an array
-
-                Intent intent = new Intent(getActivity(), PlayMusicActivity.class);
-                intent.putExtra(PlayMusicActivityFragment.MUSIC_TRACK_NUMBER, position);
-                intent.putParcelableArrayListExtra(PlayMusicActivityFragment.MUSIC_INFO, tracksData);
-                startActivity(intent);
+                if (twoPanel){
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    PlayMusicActivityFragment playMusicActivityFragment = new PlayMusicActivityFragment();
+                    Bundle args = new Bundle();
+                    args.putParcelableArrayList(PlayMusicActivityFragment.MUSIC_INFO, tracksData);
+                    args.putInt(PlayMusicActivityFragment.MUSIC_TRACK_NUMBER, position);
+                    playMusicActivityFragment.setArguments(args);
+                    playMusicActivityFragment.show(fragmentManager, "dialog");
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), PlayMusicActivity.class);
+                    intent.putExtra(PlayMusicActivityFragment.MUSIC_TRACK_NUMBER, position);
+                    intent.putParcelableArrayListExtra(PlayMusicActivityFragment.MUSIC_INFO, tracksData);
+                    startActivity(intent);
+                }
+                Log.d("twoPanel", twoPanel.toString());
             }
         });
 
@@ -72,6 +77,9 @@ public class Top10tracksFragment extends Fragment {
     }
 
     private void updateView(ArrayList<Track> tracks){
+        if (tracks.size() == 0){
+            Toast.makeText(getActivity(), "No result found", Toast.LENGTH_SHORT).show();
+        }
         tracksData = tracks;
         tracksAdapter.clear();
         tracksAdapter.addAll(tracks);

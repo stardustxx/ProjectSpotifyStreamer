@@ -1,14 +1,16 @@
 package com.sdust.projectspotifystreamer;
 
-import android.app.DialogFragment;
+import android.app.Dialog;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -36,10 +38,7 @@ public class PlayMusicActivityFragment extends DialogFragment {
     ImageButton playBtn, previousBtn, nextBtn;
     SeekBar playBar;
 
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        return super.onCreateDialog(savedInstanceState);
-//    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +93,8 @@ public class PlayMusicActivityFragment extends DialogFragment {
                     } else {
                         mediaPlayer.start();
                         playBtn.setImageResource(R.drawable.ic_pause_circle_outline_black_48dp);
-                        if (mediaPlayer.getCurrentPosition() == mediaPlayer.getDuration()){
+                        if (mediaPlayer.getCurrentPosition() == playBar.getMax()) {
+                            Log.d("end track", "true");
                             playBar.setProgress(0);
                             runPlayBar = new RunPlayBar();
                             runPlayBar.execute();
@@ -135,6 +135,13 @@ public class PlayMusicActivityFragment extends DialogFragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     private void initMusic(String trackURL){
@@ -188,14 +195,14 @@ public class PlayMusicActivityFragment extends DialogFragment {
                 int currentTrackPosition = mediaPlayer.getCurrentPosition();
                 int trackLength = mediaPlayer.getDuration();
 
-                while (mediaPlayer != null && currentTrackPosition < trackLength && asyncRunning) {
+                while (mediaPlayer != null && currentTrackPosition < trackLength && asyncRunning && mediaPlayer.isPlaying()) {
                     currentTrackPosition = mediaPlayer.getCurrentPosition();
                     publishProgress(currentTrackPosition);
                 }
             }
 
             catch (Exception e){
-                Toast.makeText(getActivity(), "Error during music playing", Toast.LENGTH_SHORT).show();
+                Log.d("playback error", e.toString());
             }
 
             // If this asyncTask is no longer needed, we cancel it to stop running
@@ -210,7 +217,17 @@ public class PlayMusicActivityFragment extends DialogFragment {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             playBtn.setImageResource(R.drawable.ic_play_circle_fill_black_48dp);
+            Log.d("max duration", Integer.toString(mediaPlayer.getDuration()));
+            Log.d("current position", Integer.toString(mediaPlayer.getCurrentPosition()));
             Log.d("done playing", "true");
+            String isPlaying;
+            if (mediaPlayer.isPlaying()){
+                isPlaying = "true";
+            }
+            else {
+                isPlaying = "false";
+            }
+            Log.d("mediaplayer is playing", isPlaying);
         }
 
         private void publishProgress(int trackTime){
