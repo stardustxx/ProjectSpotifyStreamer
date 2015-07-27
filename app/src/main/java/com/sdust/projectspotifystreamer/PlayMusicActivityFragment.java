@@ -39,15 +39,6 @@ public class PlayMusicActivityFragment extends DialogFragment {
     ImageButton playBtn, previousBtn, nextBtn;
     SeekBar playBar;
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//
-//        Log.d("saving state", "true");
-//        outState.putInt(MUSIC_TRACK_NUMBER, trackPosition);
-//        outState.putParcelableArrayList(MUSIC_INFO, tracksData);
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,13 +53,6 @@ public class PlayMusicActivityFragment extends DialogFragment {
         playBar = (SeekBar) rootView.findViewById(R.id.playBar);
 
         Bundle args = getArguments();
-//        if (savedInstanceState != null){
-//            trackPosition = savedInstanceState.getInt(MUSIC_TRACK_NUMBER);
-//            tracksData = savedInstanceState.getParcelableArrayList(MUSIC_INFO);
-//            Log.d("trackPosition", Integer.toString(trackPosition));
-//            Log.d("tracksData", tracksData.toString());
-//        }
-//        else
         if (args != null){
             trackPosition = args.getInt(MUSIC_TRACK_NUMBER);
             tracksData = args.getParcelableArrayList(MUSIC_INFO);
