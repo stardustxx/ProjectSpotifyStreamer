@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 public class PlayMusicActivityFragment extends DialogFragment {
 
@@ -28,7 +28,7 @@ public class PlayMusicActivityFragment extends DialogFragment {
     public static final String MUSIC_TRACK_NUMBER = "track number";
     private MediaPlayer mediaPlayer;
     private int trackPosition;
-    private List<Track> tracksData;
+    private ArrayList<Track> tracksData;
     private boolean asyncRunning = false;
     private RunPlayBar runPlayBar;
     private Boolean isTrackEnded = false;
@@ -38,6 +38,15 @@ public class PlayMusicActivityFragment extends DialogFragment {
     ImageView trackImage;
     ImageButton playBtn, previousBtn, nextBtn;
     SeekBar playBar;
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//
+//        Log.d("saving state", "true");
+//        outState.putInt(MUSIC_TRACK_NUMBER, trackPosition);
+//        outState.putParcelableArrayList(MUSIC_INFO, tracksData);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,8 +62,18 @@ public class PlayMusicActivityFragment extends DialogFragment {
         playBar = (SeekBar) rootView.findViewById(R.id.playBar);
 
         Bundle args = getArguments();
-        trackPosition = args.getInt(MUSIC_TRACK_NUMBER);
-        tracksData = args.getParcelableArrayList(MUSIC_INFO);
+//        if (savedInstanceState != null){
+//            trackPosition = savedInstanceState.getInt(MUSIC_TRACK_NUMBER);
+//            tracksData = savedInstanceState.getParcelableArrayList(MUSIC_INFO);
+//            Log.d("trackPosition", Integer.toString(trackPosition));
+//            Log.d("tracksData", tracksData.toString());
+//        }
+//        else
+        if (args != null){
+            trackPosition = args.getInt(MUSIC_TRACK_NUMBER);
+            tracksData = args.getParcelableArrayList(MUSIC_INFO);
+            Log.d("args", "true");
+        }
 
         updateTrackInfo();
 
@@ -95,10 +114,10 @@ public class PlayMusicActivityFragment extends DialogFragment {
                         if (isTrackEnded) {
                             Log.d("end track", "true");
                             playBar.setProgress(0);
-                            runPlayBar = new RunPlayBar();
-                            runPlayBar.execute();
                             isTrackEnded = false;
                         }
+                        runPlayBar = new RunPlayBar();
+                        runPlayBar.execute();
                     }
                 } else {
                     initMusic(tracksData.get(trackPosition).musicURL);
@@ -226,17 +245,6 @@ public class PlayMusicActivityFragment extends DialogFragment {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             playBtn.setImageResource(R.drawable.ic_play_circle_fill_black_48dp);
-//            Log.d("max duration", Integer.toString(mediaPlayer.getDuration()));
-//            Log.d("current position", Integer.toString(mediaPlayer.getCurrentPosition()));
-//            Log.d("done playing", "true");
-//            String isPlaying;
-//            if (mediaPlayer.isPlaying()){
-//                isPlaying = "true";
-//            }
-//            else {
-//                isPlaying = "false";
-//            }
-//            Log.d("mediaplayer is playing", isPlaying);
         }
 
         private void publishProgress(int trackTime){

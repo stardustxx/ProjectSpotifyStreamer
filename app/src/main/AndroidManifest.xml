@@ -35,6 +35,7 @@
             android:name=".PlayMusicActivity"
             android:label="@string/title_activity_play_music"
             android:parentActivityName=".Top10tracks"
+            android:configChanges="orientation|screenSize"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
