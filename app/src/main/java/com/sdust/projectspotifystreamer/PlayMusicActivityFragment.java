@@ -31,14 +31,13 @@ public class PlayMusicActivityFragment extends DialogFragment {
     private List<Track> tracksData;
     private boolean asyncRunning = false;
     private RunPlayBar runPlayBar;
+    private Boolean isTrackEnded = false;
 
     // Initialize all the view components
     TextView albumName, artistName, trackName;
     ImageView trackImage;
     ImageButton playBtn, previousBtn, nextBtn;
     SeekBar playBar;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +65,7 @@ public class PlayMusicActivityFragment extends DialogFragment {
         playBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (mediaPlayer != null && fromUser){
+                if (mediaPlayer != null && fromUser) {
                     mediaPlayer.seekTo(progress);
                     new RunPlayBar().execute();
                 }
@@ -93,11 +92,12 @@ public class PlayMusicActivityFragment extends DialogFragment {
                     } else {
                         mediaPlayer.start();
                         playBtn.setImageResource(R.drawable.ic_pause_circle_outline_black_48dp);
-                        if (mediaPlayer.getCurrentPosition() == playBar.getMax()) {
+                        if (isTrackEnded) {
                             Log.d("end track", "true");
                             playBar.setProgress(0);
                             runPlayBar = new RunPlayBar();
                             runPlayBar.execute();
+                            isTrackEnded = false;
                         }
                     }
                 } else {
@@ -109,6 +109,7 @@ public class PlayMusicActivityFragment extends DialogFragment {
         previousBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isTrackEnded = false;
                 if (trackPosition == 0){
                     trackPosition = tracksData.size() - 1;
                 }
@@ -123,6 +124,7 @@ public class PlayMusicActivityFragment extends DialogFragment {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isTrackEnded = false;
                 if (trackPosition == tracksData.size() - 1){
                     trackPosition = 0;
                 }
@@ -171,6 +173,13 @@ public class PlayMusicActivityFragment extends DialogFragment {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Error in playback", Toast.LENGTH_SHORT).show();
         }
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                Log.d("track end", "true");
+                isTrackEnded = true;
+            }
+        });
     }
 
     private void updateTrackInfo(){
@@ -217,17 +226,17 @@ public class PlayMusicActivityFragment extends DialogFragment {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             playBtn.setImageResource(R.drawable.ic_play_circle_fill_black_48dp);
-            Log.d("max duration", Integer.toString(mediaPlayer.getDuration()));
-            Log.d("current position", Integer.toString(mediaPlayer.getCurrentPosition()));
-            Log.d("done playing", "true");
-            String isPlaying;
-            if (mediaPlayer.isPlaying()){
-                isPlaying = "true";
-            }
-            else {
-                isPlaying = "false";
-            }
-            Log.d("mediaplayer is playing", isPlaying);
+//            Log.d("max duration", Integer.toString(mediaPlayer.getDuration()));
+//            Log.d("current position", Integer.toString(mediaPlayer.getCurrentPosition()));
+//            Log.d("done playing", "true");
+//            String isPlaying;
+//            if (mediaPlayer.isPlaying()){
+//                isPlaying = "true";
+//            }
+//            else {
+//                isPlaying = "false";
+//            }
+//            Log.d("mediaplayer is playing", isPlaying);
         }
 
         private void publishProgress(int trackTime){
